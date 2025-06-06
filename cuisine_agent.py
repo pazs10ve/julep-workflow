@@ -28,9 +28,9 @@ class CuisineAgent:
     main:
     - prompt:
         - role: system
-            content: You are a culinary expert. Provide exactly 3 iconic local dishes for the given city.
+          content: You are a culinary expert. Provide exactly 3 iconic local dishes for the given city.
         - role: user
-            content: "List 3 iconic local dishes from {{steps[0].input.city}}. Return only the dish names, one per line, no descriptions."
+          content: "List 3 iconic local dishes from {{steps[0].input.city}}. Return only the dish names, one per line, no descriptions."
     """)
         return self.client.tasks.create(
             agent_id=self.agent.id,
@@ -46,9 +46,9 @@ class CuisineAgent:
         main:
         - prompt:
             - role: system
-            content: You are a restaurant guide expert. Provide restaurant recommendations.
+              content: You are a restaurant guide expert. Provide restaurant recommendations.
             - role: user
-            content: "For {{steps[0].input.city}}, suggest 1 top-rated restaurant for each dish - {{steps[0].input.dishes}}. Format as Dish - Restaurant Name"
+              content: "For {{steps[0].input.city}}, suggest 1 top-rated restaurant for each dish: {{steps[0].input.dishes}}. Return ONLY the restaurant suggestions, one per line, in the format 'Dish - Restaurant Name'. Do not include any introductory text or explanations."
         """)
         return self.client.tasks.create(
             agent_id=self.agent.id,
