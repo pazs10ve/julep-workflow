@@ -1,0 +1,107 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+.App {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.App-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.App-header h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5em;
+}
+
+.tour-form input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 60%;
+}
+
+.tour-form button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tour-form button:hover {
+  background-color: #2980b9;
+}
+
+.tour-form button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.status-section, .results-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #ecf0f1;
+  border-radius: 4px;
+}
+
+.results-section h3 {
+  margin-top: 0;
+  color: #2980b9;
+}
+
+.results-section pre {
+  background-color: #fdfdfe;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.loading-message {
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+.restaurant-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.restaurant-list li {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.restaurant-list strong {
+  color: #34495e;
+}

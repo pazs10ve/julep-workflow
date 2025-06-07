@@ -103,23 +103,12 @@ class CuisineAgent:
             time.sleep(1)
 
 
-if __name__ == "__main__":
-    cuisine_agent = CuisineAgent()
-    city = "Tokyo"
-    dishes = cuisine_agent.get_local_dishes(city)
-    print(f"Local dishes in {city}:")
-    for dish in dishes:
-        print(f"- {dish}")
-    restaurants = cuisine_agent.find_restaurants(city, dishes)
-    print(f"\nRestaurants in {city}:")
-    for restaurant in restaurants:
-        print(f"- {restaurant}")
 
 """
 #example code
 if __name__ == "__main__":
     cuisine_agent = CuisineAgent()
-    city = "Tokyo"
+    city = "Kanpur"
     dishes = cuisine_agent.get_local_dishes(city)
     print(f"Local dishes in {city}:")
     for dish in dishes:

@@ -1,5 +1,4 @@
 from julep import Julep
-import yaml
 import time
 import os
 from typing import Dict, Any, List
@@ -18,7 +17,6 @@ class TourPlanner:
                 model="gpt-4o",
                 about="A creative tour planner that crafts delightful foodie experiences."
             )
-            print(f"Agent created successfully with ID: {agent.id}")
             return agent
         except Exception as e:
             print(f"Failed to create agent: {e}")
@@ -30,27 +28,41 @@ class TourPlanner:
             "name": "Create Foodie Tour",
             "description": "Create a delightful one-day foodie tour narrative",
             "main": [
-                {
-                    "prompt": [
-                        {
-                            "role": "system",
-                            "content": """You are a creative foodie tour planner. Create a one-day foodie tour plan for a given city. Use the provided city, weather, dining preference, and restaurant list. Format the response with clear headers (## Breakfast, ## Lunch, ## Dinner) and consider the weather conditions in the narrative."""
-                        }
-                    ]
+            {
+                "prompt": [
+                    {
+                        "role": "system",
+                        "content": """You are a creative foodie tour planner. Create a one-day foodie tour plan for a given city. Use the provided city, weather, dining preference, and restaurant list. Format the response with clear headers (## Breakfast, ## Lunch, ## Dinner) and consider the weather conditions in the narrative."""
+                    },
+                    {
+                        "role": "user",
+                        "input": "user_message"
+                    }
+                ]
+            }
+        ],
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "user_message": {
+                    "type": "string",
+                    "description": "Instructions and context to generate the foodie tour"
                 }
-            ]
+            },
+            "required": ["user_message"]
         }
-        
+    }
+
         try:
             task = self.client.tasks.create(
                 agent_id=self.agent.id,
                 **task_definition
             )
-            print(f"Task created successfully with ID: {task.id}")
             return task
         except Exception as e:
             print(f"Failed to create task: {e}")
             raise
+
     
     def create_tour(self, city: str, weather_data: Dict[str, Any], 
                    dining_type: str, restaurants: List[str]) -> str:
@@ -58,12 +70,12 @@ class TourPlanner:
         try:
             user_message = f"""Create a delightful one-day foodie tour for {city}.
 
-Tour Details:
-- Weather: {weather_data['description']} ({weather_data['temperature']}°C)
-- Dining preference: {dining_type}
-- Featured restaurants: {', '.join(restaurants)}
+                                Tour Details:
+                                - Weather: {weather_data['description']} ({weather_data['temperature']}°C)
+                                - Dining preference: {dining_type}
+                                - Featured restaurants: {', '.join(restaurants)}
 
-Please create brief but engaging narratives for breakfast, lunch, and dinner that consider the weather conditions. Format your response with clear meal headers (## Breakfast, ## Lunch, ## Dinner)."""
+                                Please create brief but engaging narratives for breakfast, lunch, and dinner that consider the weather conditions. Format your response with clear meal headers (## Breakfast, ## Lunch, ## Dinner)."""
 
             execution = self.client.executions.create(
                 task_id=self.tour_task.id,
@@ -72,7 +84,6 @@ Please create brief but engaging narratives for breakfast, lunch, and dinner tha
                 }
             )
             
-            print(f"Execution created with ID: {execution.id}")
             result = self._wait_for_completion(execution.id)
             
             if result.status == "succeeded" and hasattr(result, 'output') and result.output:
@@ -107,19 +118,19 @@ Please create brief but engaging narratives for breakfast, lunch, and dinner tha
         
         tour = f"""## Your Foodie Tour of {city}
 
-**Weather**: {weather_desc} ({temp}°C)
-**Dining Style**: {dining_type}
+                **Weather**: {weather_desc} ({temp}°C)
+                **Dining Style**: {dining_type}
 
-## Breakfast
-Start your day at {restaurants[0] if restaurants else 'a local café'} for a delightful morning meal. The {weather_desc} weather makes it perfect for {"outdoor seating" if dining_type == "outdoor" and temp > 15 else "a cozy indoor experience"}.
+                ## Breakfast
+                Start your day at {restaurants[0] if restaurants else 'a local café'} for a delightful morning meal. The {weather_desc} weather makes it perfect for {"outdoor seating" if dining_type == "outdoor" and temp > 15 else "a cozy indoor experience"}.
 
-## Lunch  
-For lunch, head to {restaurants[1] if len(restaurants) > 1 else 'a traditional restaurant'} to experience authentic local flavors. {"Enjoy the pleasant weather on their terrace" if dining_type == "outdoor" and temp > 15 else "Savor the warmth inside while watching the world go by"}.
+                ## Lunch  
+                For lunch, head to {restaurants[1] if len(restaurants) > 1 else 'a traditional restaurant'} to experience authentic local flavors. {"Enjoy the pleasant weather on their terrace" if dining_type == "outdoor" and temp > 15 else "Savor the warmth inside while watching the world go by"}.
 
-## Dinner
-End your culinary adventure at {restaurants[2] if len(restaurants) > 2 else 'a renowned dinner spot'} for an unforgettable evening meal. The perfect way to conclude your foodie exploration of {city}!
+                ## Dinner
+                End your culinary adventure at {restaurants[2] if len(restaurants) > 2 else 'a renowned dinner spot'} for an unforgettable evening meal. The perfect way to conclude your foodie exploration of {city}!
 
-*Bon appétit!*"""
+                *Bon appétit!*"""
         
         return tour
     
@@ -137,11 +148,14 @@ End your culinary adventure at {restaurants[2] if len(restaurants) > 2 else 'a r
         
         return type('Result', (), {'status': 'timeout', 'output': None})()
 
+
+
+"""
 # Example usage
 if __name__ == "__main__":
     tour_planner = TourPlanner()
     
-    city = "Chandigarh"
+    city = "Kanpur"
     weather_data = {
         'temperature': 18,
         'description': 'partly cloudy',
@@ -157,3 +171,4 @@ if __name__ == "__main__":
     
     tour = tour_planner.create_tour(city, weather_data, dining_type, restaurants)
     print(f"Foodie Tour for {city}:\n{tour}")
+"""

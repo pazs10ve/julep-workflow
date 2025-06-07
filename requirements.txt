@@ -2,3 +2,7 @@ julep
 requests
 python-dotenv
 pyyaml
+fastapi
+uvicorn
+pydantic
+python-multipart
